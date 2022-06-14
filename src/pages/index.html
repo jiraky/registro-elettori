@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Registro elettori ¦ Ordine degli Ingegneri di Verona e Provincia</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.11.2/css/all.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="css/mdb.min.css" />
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!--Main Navigation-->
+  <header>
+    <style>
+
+
+
+    </style>
+
+    <!-- Background image -->
+    <div id="intro" class="bg-image shadow-2-strong">
+      <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-md-8">
+              <div class="bg-white rounded shadow-5-strong p-5">
+                <h2 style="text-align:center; margin-bottom:20px;"><img src="img/logo.png"></h2>
+                <h2 style="text-align:center; margin-bottom:20px;">Registro elettronico elettori</h2>
+                <a href="/login.html" class="btn btn-primary btn-block" id="login">Login</a>
+                <a href="#" class="btn btn-primary btn-block d-none" id="logout">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Background image -->
+  </header>
+  <!--Main Navigation-->
+
+  <!-- MDB -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <script
+			  src="https://code.jquery.com/jquery-3.6.0.min.js"
+			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			  crossorigin="anonymous"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+// A $( document ).ready() block.
+$( document ).ready(function() {if(typeof localStorage.getItem('token') !== 'undefined' && localStorage.getItem('token') !== null) {
+    $("#login").addClass('d-none')
+    $("#logout").removeClass('d-none')
+  } else {
+    window.location.href = "/login.html";
+  }
+  $("#logout").click(function() {
+    let token = localStorage.getItem('token')
+    $.ajax({
+      url: 'https://localhost:3000/logout', // url where to submit the request
+      type : "POST", // type of action POST || GET
+      headers: {"Authorization": "Bearer "+token},
+      success: function(result) {
+        console.log(result),
+        window.location.href = "/login.html";
+      },
+      error: function(xhr, resp, text) {
+        console.log(xhr, resp, text);
+      } 
+    })
+    localStorage.clear()
+    return false;
+  })
+});
+
+</script>
+
+</body>
+
+</html>

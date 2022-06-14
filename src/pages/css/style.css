@@ -1,0 +1,18 @@
+#intro {
+  background-image: url(../img/verona.jpg);
+  height: 100vh;
+}
+
+/* Height for devices larger than 576px */
+@media (min-width: 992px) {
+
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+}
+
+.btn-primary {
+color: #fff;
+background-color:  #AC2B37;
+}
