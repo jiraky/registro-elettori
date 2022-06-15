@@ -14,7 +14,7 @@ import errorMiddleware from '@middlewares/error.middleware';
 
 validateEnv();
 
-const app = new App([new AuthRoute(), new VotersRoute()]);
+const app = new App([new UsersRoute(), new AuthRoute(), new VotersRoute()]);
 
 app.listen();
 
@@ -32,10 +32,10 @@ http_app.use(cookieParser());
 http_app.use(errorMiddleware);
 
 http_app.get('*', function(req, res) {  
-    res.redirect('https://localhost:9443' + req.url);
+    res.redirect('https://registro.ingegneri.vr.it' + req.url);
 })
 
-http_app.listen(8080)
+http_app.listen(80)
 
 const https_app = express()
 https_app.use(cors({ origin: ORIGIN}));
@@ -52,10 +52,10 @@ require('https')
   .createServer(
     {
       // ...
-      cert: fs.readFileSync('../certs/localhost.pem'),
-      key: fs.readFileSync('../certs/localhost.key'),
+      cert: fs.readFileSync('/etc/ssl/certs/registro.ingegneri.vr.it.pem'),
+      key: fs.readFileSync('/etc/ssl/private/registro.ingegneri.vr.it.key'),
       // ...
     },
     https_app
   )
-  .listen(9443);
+  .listen(443);

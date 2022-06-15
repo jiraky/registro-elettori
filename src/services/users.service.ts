@@ -1,12 +1,15 @@
 import { hash } from 'bcrypt';
-import { CreateUserDto } from '@dtos/users.dto';
+import { ChangePasswordUserDto, CreateUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
+import { Otp } from '@/interfaces/otps.interface';
+import otpModel from '@/models/otp.model';
 
 class UserService {
   public users = userModel;
+  public otps = otpModel;
 
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await this.users.find();
@@ -32,6 +35,27 @@ class UserService {
     const createUserData: User = await this.users.create({ ...userData, password: hashedPassword });
 
     return createUserData;
+  }
+
+  public async changePassword(changePassData: ChangePasswordUserDto): Promise<User> {
+    if (isEmpty(changePassData)) throw new HttpException(400, "Empty request");
+
+    const findOtp: Otp = await this.otps.findOne({ email: changePassData.email });
+    
+    if (isEmpty(changePassData)) {
+      throw new HttpException(404, "Code not found");
+    }
+    if (changePassData.code == findOtp.code) {
+      const user: User = await this.users.findOne({ email: findOtp.email });
+      const hashedPassword = await hash(changePassData.password, 10);
+      const updatedUser: User = await this.users.findOneAndUpdate({_id:user._id}, {password:hashedPassword}, {
+        returnOriginal: false
+      });
+      await this.otps.findOneAndDelete({ _id: findOtp._id });
+      return updatedUser;
+    } else {
+      throw new HttpException(403, "Wrong authentication code");
+    }
   }
 
   public async updateUser(userId: string, userData: CreateUserDto): Promise<User> {

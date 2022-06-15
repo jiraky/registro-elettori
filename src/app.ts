@@ -33,8 +33,8 @@ class App {
   const fs = require('fs');
   require('https').createServer({
       // ...
-      cert: fs.readFileSync('../certs/localhost.pem'),
-      key: fs.readFileSync('../certs/localhost.key'),
+      cert: fs.readFileSync('/etc/ssl/certs/registro.ingegneri.vr.it.pem'),
+      key: fs.readFileSync('/etc/ssl/private/registro.ingegneri.vr.it.key'),
       // ...
     },
     this.app
