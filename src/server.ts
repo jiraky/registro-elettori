@@ -14,7 +14,7 @@ import errorMiddleware from '@middlewares/error.middleware';
 
 validateEnv();
 
-const app = new App([new AuthRoute(), new VotersRoute()]);
+const app = new App([new UsersRoute(), new AuthRoute(), new VotersRoute()]);
 
 app.listen();
 

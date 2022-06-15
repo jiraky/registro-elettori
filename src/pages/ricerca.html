@@ -186,7 +186,7 @@ $( document ).ready(function() {
   });
   $("#vote").submit(function() {
     $.ajax({
-      url: 'https://localhost:3000/voters/'+$("#_id").val(), // url where to submit the request
+      url: 'https://registro.zagomattia.it:3000/voters/'+$("#_id").val(), // url where to submit the request
       type : "PUT", // type of action POST || GET
       headers: {"Authorization": "Bearer "+localStorage.getItem('token')},
       dataType : 'json', // data type
@@ -211,7 +211,7 @@ $( document ).ready(function() {
   $("#logout").click(function() {
     let token = localStorage.getItem('token')
     $.ajax({
-      url: 'https://localhost:3000/logout', // url where to submit the request
+      url: 'https://registro.zagomattia.it:3000/logout', // url where to submit the request
       type : "POST", // type of action POST || GET
       headers: {"Authorization": "Bearer "+token},
       success: function(result) {
