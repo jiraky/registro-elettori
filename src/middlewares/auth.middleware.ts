@@ -14,13 +14,11 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       const secretKey: string = SECRET_KEY;
       const verificationResponse = (await verify(Authorization, secretKey)) as DataStoredInToken;
       const is_blacklisted = await jwtModel.findOne({jwt: Authorization}).collation({'locale':'it', 'strength': 1})
-      console.log("Is blacklisted:", is_blacklisted)
       if (is_blacklisted) {
         next(new HttpException(403, 'Blacklisted authentication token'));
       }
       const userId = verificationResponse._id;
       const findUser = await userModel.findById(userId);
-      console.debug("Find user:", findUser)
       if (findUser) {
         req.user = findUser;
         next();

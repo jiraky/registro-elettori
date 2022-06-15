@@ -89,9 +89,8 @@ $( document ).ready(function() {
         "email": $("#email").val(),
         "password": $("#password").val()
     };
-    console.debug("Login Data", formData);
     $.ajax({
-      url: 'https://localhost:3000/users', // url where to submit the request
+      url: 'https://registro.ingegneri.vr.it:3000/users', // url where to submit the request
       type : "POST", // type of action POST || GET
       dataType : 'json', // data type
       data : formData, // post data || get data

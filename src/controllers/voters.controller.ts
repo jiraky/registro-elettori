@@ -42,13 +42,9 @@ class VotersController {
   public findVoterBySurnameAndRegistryCode = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const userData: User = req.user;
-      console.log("Request", req.body);
       const voterData: CreateVoterSearchDto = req.body;
-      console.log("VoterDataBody", voterData);
       const findOneVoterData: Voter = await this.voterService.findVoterBySurnameAndRegistryCode(voterData.surname, voterData.number)
-
-      console.log("Found", findOneVoterData);
-     
+    
       if(typeof findOneVoterData.vote_datetime !== 'undefined' && findOneVoterData.vote_datetime !== null) {
         logger.info("[VOTER] Request voter data by " + userData._id + "\tVoter "+ findOneVoterData + " has already voted.")
       } else {

@@ -129,14 +129,13 @@
 // A $( document ).ready() block.
 $( document ).ready(function() {
   if(typeof localStorage.getItem('token') !== 'undefined' && localStorage.getItem('token') !== null) {
-    console.log("Token is set:", localStorage.getItem('token'))
   } else {
     window.location.href = "/login.html";
   }
   $("#search").submit(function() {
     $('#voter-notfound').addClass('d-none')
     $.ajax({
-      url: 'https://localhost:3000/voters/search', // url where to submit the request
+      url: 'https://registro.ingegneri.vr.it:3000/voters/search', // url where to submit the request
       type : "POST", // type of action POST || GET
       headers: {"Authorization": "Bearer "+localStorage.getItem('token')},
       dataType : 'json', // data type
@@ -147,7 +146,6 @@ $( document ).ready(function() {
       success : function(result) {
         $('#search').hide()
         $('#search').toggleClass("d-none")
-        console.debug(result)
         if(typeof result.vote_datetime !== 'undefined' && result.vote_datetime !== null) {
           //var fng = "<a href='#'><input style='width:100%;' class='btn btn-danger' type='button' value='VOTAZIONE EFFETTUATA' name='vota'><br><br/></a><strong>Votato il:</strong> "+result.vote_datetime+","+"<br/><strong>Luogo:</strong> "+result.vote_location+"<br/><br/>";
           //$("#warning").html(fng);
@@ -171,7 +169,7 @@ $( document ).ready(function() {
         }
       },
       error: function(xhr, resp, text) {
-        console.log(xhr, resp, text);
+        console.error(xhr, resp, text);
         if(xhr.status=="404") {
           $('#voter-notfound').show()
           $('#voter-notfound').removeClass('d-none')
@@ -186,7 +184,7 @@ $( document ).ready(function() {
   });
   $("#vote").submit(function() {
     $.ajax({
-      url: 'https://registro.zagomattia.it:3000/voters/'+$("#_id").val(), // url where to submit the request
+      url: 'https://registro.ingegneri.vr.it:3000/voters/'+$("#_id").val(), // url where to submit the request
       type : "PUT", // type of action POST || GET
       headers: {"Authorization": "Bearer "+localStorage.getItem('token')},
       dataType : 'json', // data type
@@ -194,7 +192,6 @@ $( document ).ready(function() {
         "vote_location": $("#location").val()
       },
       success: function(result) {
-        console.log(result),
         $('#vote-registered').show()
         $('#vote-registered').toggleClass("d-none")
         $('#canvote').hide()
@@ -203,7 +200,7 @@ $( document ).ready(function() {
         $('#vote').toggleClass("d-none")
       },
       error: function(xhr, resp, text) {
-        console.log(xhr, resp, text);
+        console.error(xhr, resp, text);
       } 
     })
     return false;
@@ -211,15 +208,14 @@ $( document ).ready(function() {
   $("#logout").click(function() {
     let token = localStorage.getItem('token')
     $.ajax({
-      url: 'https://registro.zagomattia.it:3000/logout', // url where to submit the request
+      url: 'https://registro.ingegneri.vr.it:3000/logout', // url where to submit the request
       type : "POST", // type of action POST || GET
       headers: {"Authorization": "Bearer "+token},
       success: function(result) {
-        console.log(result),
         window.location.href = "/login.html";
       },
       error: function(xhr, resp, text) {
-        console.log(xhr, resp, text);
+        console.error(xhr, resp, text);
       } 
     })
     localStorage.clear() 

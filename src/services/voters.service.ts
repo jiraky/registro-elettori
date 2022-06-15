@@ -36,7 +36,6 @@ class VoterService {
     if (isEmpty(voterRegistryCode)) throw new HttpException(400, "Empty registry code");
 
     const findVoter: Voter = await this.voters.findOne({ surname: voterSurname, number: voterRegistryCode }).collation({'locale':'it','strength':1});
-    console.log("Looking for ",voterSurname,voterRegistryCode, "\tFound:",findVoter)
     if (!findVoter) throw new HttpException(404, "Voter not found");
 
     return findVoter;

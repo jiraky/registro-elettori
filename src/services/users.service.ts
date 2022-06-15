@@ -40,10 +40,7 @@ class UserService {
   public async changePassword(changePassData: ChangePasswordUserDto): Promise<User> {
     if (isEmpty(changePassData)) throw new HttpException(400, "Empty request");
 
-    console.debug("Change password data", changePassData)
-
     const findOtp: Otp = await this.otps.findOne({ email: changePassData.email });
-    console.debug("OTP data", findOtp)
     
     if (isEmpty(changePassData)) {
       throw new HttpException(404, "Code not found");
@@ -54,7 +51,6 @@ class UserService {
       const updatedUser: User = await this.users.findOneAndUpdate({_id:user._id}, {password:hashedPassword}, {
         returnOriginal: false
       });
-      console.log("New user data:", updatedUser)
       await this.otps.findOneAndDelete({ _id: findOtp._id });
       return updatedUser;
     } else {
