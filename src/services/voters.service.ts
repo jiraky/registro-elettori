@@ -15,36 +15,45 @@ class VoterService {
   }
 
   public async findVoterById(voterId: string): Promise<Voter> {
-    if (isEmpty(voterId)) throw new HttpException(400, "Empty");
+    const notEmptyVoterId = (voterId ?? "").trim();
+    if (isEmpty(notEmptyVoterId)) throw new HttpException(400, "Empty");
 
-    const findVoter: Voter = await this.voters.findOne({ _id: voterId });
+    const findVoter: Voter = await this.voters.findOne({ _id: notEmptyVoterId });
     if (!findVoter) throw new HttpException(409, "Not found");
 
     return findVoter;
   }
 
   public async hasVoted(voterId: string): Promise<Boolean> {
-    if (isEmpty(voterId)) throw new HttpException(400, "Empty");
+    const notEmptyVoterId = (voterId ?? "").trim();
+    if (isEmpty(notEmptyVoterId)) throw new HttpException(400, "Empty");
 
-    const findVoter: Voter = await this.findVoterById(voterId);
+    const findVoter: Voter = await this.findVoterById(notEmptyVoterId);
     if (!findVoter) throw new HttpException(409, "Not found");
     return findVoter.vote_datetime != null;
   }
 
   public async findVoterBySurnameAndRegistryCode(voterSurname: string, voterRegistryCode: string): Promise<Voter> {
-    if (isEmpty(voterSurname)) throw new HttpException(400, "Empty surname");
-    if (isEmpty(voterRegistryCode)) throw new HttpException(400, "Empty registry code");
 
-    const findVoter: Voter = await this.voters.findOne({ surname: voterSurname, number: voterRegistryCode }).collation({'locale':'it','strength':1});
+    const notEmptyVoterSurname = (voterSurname ?? "").trim();
+    const notEmptyVoterRegistryCode = (voterRegistryCode ?? "").trim();
+
+    if (isEmpty(notEmptyVoterSurname)) throw new HttpException(400, "Empty surname");
+    if (isEmpty(notEmptyVoterRegistryCode)) throw new HttpException(400, "Empty registry code");
+    
+    const findVoter: Voter = await this.voters.findOne({ surname: notEmptyVoterSurname, number: notEmptyVoterRegistryCode }).collation({'locale':'it','strength':1});
     if (!findVoter) throw new HttpException(404, "Voter not found");
 
     return findVoter;
   }
 
   public async findVoterByFiscalCode(voterFC: string): Promise<Voter> {
-    if (isEmpty(voterFC)) throw new HttpException(400, "Empty");
 
-    const findVoter: Voter = await this.voters.findOne({ fiscal_code: voterFC });
+    const notEmptyVoterFC = (voterFC ?? "").trim();
+
+    if (isEmpty(notEmptyVoterFC)) throw new HttpException(400, "Empty");
+
+    const findVoter: Voter = await this.voters.findOne({ fiscal_code: notEmptyVoterFC });
     if (!findVoter) throw new HttpException(409, "Not found");
 
     return findVoter;
